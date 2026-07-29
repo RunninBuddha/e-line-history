@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Line — Points Above Average & Membership Timeline</title>
+<style>
+body { font-family: sans-serif; background: #fff; padding: 2rem; max-width: 900px; margin: 0 auto; }
+.section-title { font-size: 13px; font-weight: 600; color: #111; margin: 24px 0 4px; }
+.section-sub { font-size: 11px; color: #888; margin: 0 0 12px; }
+.divider { height: 1px; background: #eee; margin: 24px 0; }
+.source { font-size: 11px; color: #aaa; margin-top: 12px; font-style: italic; }
+.par-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.par-label { font-size: 11px; color: #111; width: 155px; text-align: right; flex-shrink: 0; line-height: 1.3; }
+.par-seasons { font-size: 10px; color: #888; display: block; }
+.par-wrap { flex: 1; position: relative; height: 22px; }
+.par-zero { position: absolute; top: 0; bottom: 0; width: 1px; background: #ddd; }
+.par-bar { position: absolute; top: 3px; height: 16px; border-radius: 3px; display: flex; align-items: center; }
+.par-val { font-size: 10px; font-weight: 500; white-space: nowrap; padding: 0 5px; }
+.gantt-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.gantt-label { font-size: 11px; color: #111; width: 130px; text-align: right; flex-shrink: 0; }
+.gantt-wrap { flex: 1; position: relative; height: 18px; background: #f5f5f0; border-radius: 3px; }
+.gantt-bar { position: absolute; top: 2px; height: 14px; border-radius: 2px; }
+.yr-header { display: flex; margin-bottom: 4px; }
+.yr-lbl { font-size: 9px; color: #aaa; flex: 1; text-align: center; }
+</style>
+</head>
+<body>
+
+<p class="section-title" style="margin-top:0;">Points Above League Average · Career Total</p>
+<p class="section-sub">Each owner's cumulative points above (or below) the league average across all their seasons. Seasons and per-season average shown beneath name.</p>
+<div id="parChart"></div>
+
+<div class="divider"></div>
+
+<p class="section-title">E-Line Membership Timeline · 2001–2025</p>
+<p class="section-sub">Each bar shows the seasons an owner was active. Gaps indicate seasons away from the league.</p>
+<div class="yr-header" style="padding-left:146px;">
+  <span class="yr-lbl">01</span><span class="yr-lbl">02</span><span class="yr-lbl">03</span><span class="yr-lbl">04</span><span class="yr-lbl">05</span><span class="yr-lbl">06</span><span class="yr-lbl">07</span><span class="yr-lbl">08</span><span class="yr-lbl">09</span><span class="yr-lbl">10</span><span class="yr-lbl">11</span><span class="yr-lbl">12</span><span class="yr-lbl">13</span><span class="yr-lbl">14</span><span class="yr-lbl">15</span><span class="yr-lbl">16</span><span class="yr-lbl">17</span><span class="yr-lbl">18</span><span class="yr-lbl">19</span><span class="yr-lbl">20</span><span class="yr-lbl">21</span><span class="yr-lbl">22</span><span class="yr-lbl">23</span><span class="yr-lbl">24</span><span class="yr-lbl">25</span>
+</div>
+<div id="ganttChart"></div>
+
+<p class="source">Source: CBS Sports Fantasy Basketball — E-Line league history. Season-by-season standings data begins 2001; pre-2001 records unavailable.</p>
+
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// PAR
+const parData = [
+  {name:'Barry Fike', par:179.7, avg:7.5, seasons:24},
+  {name:'Owen Davis', par:70.7, avg:4.7, seasons:15},
+  {name:'Paul Lecky', par:71.7, avg:3.0, seasons:24},
+  {name:'Jim McLelland', par:45.2, avg:1.8, seasons:25},
+  {name:'Dan Harris', par:31.0, avg:1.9, seasons:16},
+  {name:'Dan Scharf', par:30.0, avg:7.5, seasons:4},
+  {name:'Tom Obernesser', par:10.2, avg:0.7, seasons:14},
+  {name:'Aaron Schleifer', par:0.2, avg:0.0, seasons:25},
+  {name:'Michael Hengl', par:-4.5, avg:-0.5, seasons:9},
+  {name:'Franzese/Pickering', par:-7.5, avg:-7.5, seasons:1},
+  {name:'Mike Sternberg', par:-25.0, avg:-8.3, seasons:3},
+  {name:'Anthony Hickman', par:-26.8, avg:-3.4, seasons:8},
+  {name:'Kevin Lynch', par:-28.3, avg:-4.0, seasons:7},
+  {name:'Rod Bassler', par:-33.3, avg:-1.3, seasons:25},
+  {name:'Cory Bryant', par:-33.5, avg:-3.0, seasons:11},
+  {name:'Kyle Lecky', par:-39.8, avg:-4.4, seasons:9},
+  {name:'John Fike', par:-41.3, avg:-1.9, seasons:22},
+  {name:'Ed Maxwell', par:-57.0, avg:-19.0, seasons:3},
+  {name:'Brad McLelland', par:-71.8, avg:-3.4, seasons:21},
+  {name:'Robert Yamauchi', par:-113.3, avg:-6.3, seasons:18},
+];
+
+const maxPos = 179.7, maxNeg = 137.3, total = maxPos + maxNeg;
+const zeroPos = maxPos / total;
+const parChart = document.getElementById('parChart');
+parData.sort((a,b) => b.par - a.par).forEach(d => {
+  const row = document.createElement('div'); row.className='par-row';
+  const lbl = document.createElement('div'); lbl.className='par-label';
+  lbl.innerHTML = d.name + '<span class="par-seasons">'+d.seasons+' season'+(d.seasons>1?'s':'')+' · avg '+(d.avg>=0?'+':'')+d.avg+'</span>';
+  const wrap = document.createElement('div'); wrap.className='par-wrap';
+  const zero = document.createElement('div'); zero.className='par-zero'; zero.style.left=(zeroPos*100)+'%';
+  wrap.appendChild(zero);
+  const bar = document.createElement('div'); bar.className='par-bar';
+  const isPos = d.par >= 0;
+  const barPct = (Math.abs(d.par)/(total*0.95))*100;
+  if (isPos) {
+    bar.style.left=(zeroPos*100)+'%';
+    bar.style.width=Math.min(barPct*(1-zeroPos),(1-zeroPos)*100)+'%';
+    bar.style.background=d.name==='Jim McLelland'?'#173404':'#639922';
+    const val=document.createElement('span'); val.className='par-val'; val.style.color='#EAF3DE'; val.textContent='+'+d.par;
+    bar.appendChild(val);
+  } else {
+    bar.style.right=((1-zeroPos)*100)+'%';
+    bar.style.width=Math.min(barPct*zeroPos,zeroPos*100)+'%';
+    bar.style.background='#EF9F27';
+    const val=document.createElement('span'); val.className='par-val'; val.style.color='#173404'; val.textContent=d.par;
+    bar.appendChild(val);
+  }
+  wrap.appendChild(bar); row.appendChild(lbl); row.appendChild(wrap); parChart.appendChild(row);
+});
+
+// GANTT
+const years=[2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+const ganttOwners=[
+  {name:'Jim McLelland', active:[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], color:'#173404'},
+  {name:'Barry Fike', active:[2001, 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], color:'#27500A'},
+  {name:'Paul Lecky', active:[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025], color:'#3B6D11'},
+  {name:'Aaron Schleifer', active:[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], color:'#639922'},
+  {name:'Rod Bassler', active:[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], color:'#97C459'},
+  {name:'John Fike', active:[2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], color:'#854F0B'},
+  {name:'Brad McLelland', active:[2003, 2004, 2005, 2006, 2007, 2009, 2010, 2011, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], color:'#EF9F27'},
+  {name:'Dan Harris', active:[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016], color:'#0C447C'},
+  {name:'Robert Yamauchi', active:[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018], color:'#3C3489'},
+  {name:'Tom Obernesser', active:[2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], color:'#0C6B8E'},
+  {name:'Cory Bryant', active:[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011], color:'#993C1D'},
+  {name:'Michael Hengl', active:[2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009], color:'#533489'},
+  {name:'Owen Davis', active:[2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025], color:'#8B3A3A'},
+  {name:'Kevin Lynch', active:[2017, 2018, 2019, 2020, 2021, 2022, 2023], color:'#5B7A1F'},
+  {name:'Anthony Hickman', active:[2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], color:'#2E6B8A'},
+  {name:'Kyle Lecky', active:[2001, 2004, 2005, 2017, 2018, 2019, 2020, 2021, 2022], color:'#B5861A'},
+  {name:'Dan Scharf', active:[2001, 2002, 2003, 2005], color:'#777'},
+  {name:'Ed Maxwell', active:[2023, 2024, 2025], color:'#999'},
+  {name:'Mike Sternberg', active:[2023, 2024, 2025], color:'#aaa'},
+];
+const ganttEl=document.getElementById('ganttChart');
+ganttOwners.forEach(owner=>{
+  const row=document.createElement('div'); row.className='gantt-row';
+  const lbl=document.createElement('div'); lbl.className='gantt-label';
+  lbl.textContent=owner.name.split(' ')[0]+' '+owner.name.split(' ').slice(-1)[0];
+  const wrap=document.createElement('div'); wrap.className='gantt-wrap';
+  years.forEach((yr,i)=>{
+    if(owner.active.includes(yr)){
+      const bar=document.createElement('div'); bar.className='gantt-bar';
+      bar.style.left=(i/years.length*100)+'%';
+      bar.style.width=(1/years.length*100)+'%';
+      bar.style.background=owner.color;
+      bar.title=`${owner.name} · ${yr}`;
+      wrap.appendChild(bar);
+    }
+  });
+  row.appendChild(lbl); row.appendChild(wrap); ganttEl.appendChild(row);
+});
+</script>
+
+</body>
+</html>
