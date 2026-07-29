@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Line — Owner Avg Points Scatter Plot</title>
+<style>
+body { font-family: sans-serif; background: #fff; padding: 2rem; max-width: 820px; margin: 0 auto; }
+.legend { margin-top: 16px; font-size: 11px; color: #888; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.source { font-size: 11px; color: #aaa; margin-top: 8px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<div style="position:relative; width:100%; height:620px;">
+<canvas id="scatter" role="img" aria-label="Scatter plot of E-Line fantasy basketball owners by seasons played and average points per season, with high and low season scores shown as error bars.">Each point represents an owner. X axis shows seasons played, Y axis shows average points per season.</canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const owners = [
+  { name: 'Barry Fike', seasons: 24, avg: 50.5, high: 71.0, low: 30.0 },
+  { name: 'Paul Lecky', seasons: 24, avg: 45.9, high: 64.0, low: 22.0 },
+  { name: 'Jim McLelland', seasons: 25, avg: 44.6, high: 70.0, low: 16.0 },
+  { name: 'Aaron Schleifer', seasons: 25, avg: 42.8, high: 66.0, low: 18.0 },
+  { name: 'Rod Bassler', seasons: 25, avg: 41.5, high: 62.0, low: 17.0 },
+  { name: 'John Fike', seasons: 22, avg: 41.1, high: 67.0, low: 11.0 },
+  { name: 'Owen Davis', seasons: 15, avg: 47.9, high: 75.0, low: 13.0 },
+  { name: 'Dan Harris', seasons: 16, avg: 44.0, high: 63.0, low: 28.0 },
+  { name: 'Brad McLelland', seasons: 21, avg: 39.9, high: 59.0, low: 14.0 },
+  { name: 'Robert Yamauchi', seasons: 18, avg: 36.1, high: 60.0, low: 16.0 },
+  { name: 'Anthony Hickman', seasons:  8, avg: 40.6, high: 67.0, low: 17.0 },
+  { name: 'Tom Obernesser', seasons: 14, avg: 44.1, high: 57.0, low: 27.0 },
+  { name: 'Cory Bryant', seasons: 11, avg: 39.1, high: 49.0, low: 26.0 },
+  { name: 'Michael Hengl', seasons:  9, avg: 41.9, high: 64.0, low: 18.0 },
+  { name: 'Kyle Lecky', seasons:  9, avg: 40.1, high: 61.5, low: 11.0 },
+  { name: 'Kevin Lynch', seasons:  7, avg: 39.7, high: 59.0, low: 22.0 },
+  { name: 'Dan Scharf', seasons:  4, avg: 51.2, high: 58.0, low: 38.0 },
+  { name: 'Mike Sternberg', seasons:  3, avg: 36.0, high: 49.0, low: 24.0 },
+  { name: 'Ed Maxwell', seasons:  3, avg: 25.3, high: 32.0, low: 20.0 },
+];
+
+const colors = owners.map(o => {
+  if (o.seasons >= 20) return '#173404';
+  if (o.seasons >= 15) return '#27500A';
+  if (o.seasons >= 10) return '#3B6D11';
+  if (o.seasons >= 5)  return '#639922';
+  return '#97C459';
+});
+
+const errorBars = {
+  id: 'errorBars',
+  afterDatasetsDraw(chart) {
+    const { ctx, scales: { x, y } } = chart;
+    chart.data.datasets[0].data.forEach((pt, i) => {
+      const o = owners[i];
+      const xPx = x.getPixelForValue(pt.x);
+      const yHigh = y.getPixelForValue(o.high);
+      const yLow  = y.getPixelForValue(o.low);
+      ctx.save();
+      ctx.strokeStyle = colors[i];
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath(); ctx.moveTo(xPx, yHigh); ctx.lineTo(xPx, yLow); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(xPx-4, yHigh); ctx.lineTo(xPx+4, yHigh); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(xPx-4, yLow);  ctx.lineTo(xPx+4, yLow);  ctx.stroke();
+      ctx.restore();
+    });
+  }
+};
+
+new Chart(document.getElementById('scatter'), {
+  type: 'scatter',
+  plugins: [errorBars],
+  data: {
+    datasets: [{
+      data: owners.map(o => ({ x: o.seasons, y: parseFloat(o.avg.toFixed(1)) })),
+      backgroundColor: colors,
+      pointRadius: 7,
+      pointHoverRadius: 9,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label(ctx) {
+            const o = owners[ctx.dataIndex];
+            return [
+              o.name,
+              `Seasons: ${o.seasons}`,
+              `Avg: ${o.avg.toFixed(1)} pts`,
+              `High: ${o.high} | Low: ${o.low}`
+            ];
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'seasons played', color: '#888', font: { size: 12 } },
+        min: 0, max: 27,
+        ticks: { stepSize: 1, color: '#888', font: { size: 11 } },
+        grid: { color: 'rgba(0,0,0,0.06)' }
+      },
+      y: {
+        title: { display: true, text: 'avg pts per season', color: '#888', font: { size: 12 } },
+        min: 0, max: 85,
+        ticks: { color: '#888', font: { size: 11 } },
+        grid: { color: 'rgba(0,0,0,0.06)' }
+      }
+    }
+  }
+});
+</script>
+
+<div class="legend">
+  <span>Dot color = tenure length:</span>
+  <span><span class="dot" style="background:#173404;"></span> 20–25 seasons</span>
+  <span><span class="dot" style="background:#27500A;"></span> 15–19</span>
+  <span><span class="dot" style="background:#3B6D11;"></span> 10–14</span>
+  <span><span class="dot" style="background:#639922;"></span> 5–9</span>
+  <span><span class="dot" style="background:#97C459;"></span> 1–4</span>
+  <span style="margin-left:8px;">Vertical lines = season high/low range. Hover dots for details.</span>
+</div>
+<p class="source">Source: CBS Sports Fantasy Basketball — E-Line league history. Season-by-season standings data begins 2001; pre-2001 records unavailable.</p>
+
+</body>
+</html>
