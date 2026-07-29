@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Line — All-Time Points by Owner</title>
+<style>
+body { font-family: sans-serif; background: #fff; padding: 2rem; max-width: 820px; margin: 0 auto; }
+.header-text { font-size: 13px; color: #555; line-height: 1.6; margin: 0 0 1.5rem; }
+.section-lbl { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 12px 185px; }
+.row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+.owner { width: 175px; text-align: right; flex-shrink: 0; }
+.owner-name { font-size: 13px; color: #111; font-weight: 500; display: flex; align-items: center; justify-content: flex-end; gap: 5px; }
+.owner-years { font-size: 11px; color: #888; display: block; text-align: right; }
+.bar-wrap { flex: 1; border-radius: 4px; height: 28px; position: relative; background: #d4eabc; }
+.bar-fill { height: 28px; border-radius: 4px; position: absolute; top: 0; left: 0; display: flex; align-items: center; overflow: hidden; }
+.team-names { font-size: 10px; color: #EAF3DE; white-space: nowrap; overflow: hidden; padding: 0 6px; flex: 1; }
+.team-names.dark { color: #173404; }
+.val-inside { font-size: 12px; font-weight: 500; white-space: nowrap; padding-right: 6px; flex-shrink: 0; }
+.val-inside.light { color: #EAF3DE; }
+.val-inside.dark { color: #173404; }
+.val-after { font-size: 11px; font-weight: 500; color: #173404; position: absolute; top: 7px; white-space: nowrap; }
+.marker { font-size: 11px; cursor: default; color: #639922; }
+.divider { height: 1px; background: #ddd; margin: 8px 0 8px 185px; }
+.co-row .owner-name { font-size: 12px; font-style: italic; }
+.footnote { font-size: 11px; color: #888; margin: 16px 0 4px 185px; }
+.source { font-size: 11px; color: #aaa; margin: 4px 0 0 185px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<p class="header-text">The E-Line is a 7-category rotisserie fantasy basketball league — points, rebounds, assists, free throw percentage, blocks, threes made, and steals — where category finishes accumulate into yearly point totals. This chart ranks every owner in league history by their all-time cumulative roto points, combining totals across all team names each owner has used.</p>
+
+<div class="section-lbl">all-time roto points by owner</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Barry Fike</span><span class="owner-years">2001–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:100.0%; background:#3B6D11;">
+    <span class="team-names">Oxford All-Stars</span>
+    <span class="val-inside light">1212</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Jim McLelland <span class="marker" title="Co-owned team(s)">⚑</span></span><span class="owner-years">2001–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:92.1%; background:#173404;">
+    <span class="team-names">Woodpeckers of Mistrust · Keyser Sozes* · Runnin' Buddhas</span>
+    <span class="val-inside light">1116</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Paul Lecky <span class="marker" title="Co-owned team(s)">⚑</span></span><span class="owner-years">2001–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:90.8%; background:#3B6D11;">
+    <span class="team-names">Grayson Gang* · Kangaroos · Holdovers · Boomers</span>
+    <span class="val-inside light">1100.5</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Aaron Schleifer</span><span class="owner-years">2001–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:88.4%; background:#639922;">
+    <span class="team-names">Phi Slamma Bannana</span>
+    <span class="val-inside light">1071</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Rod Bassler</span><span class="owner-years">2001–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:85.6%; background:#97C459;">
+    <span class="team-names">Mr. Mean</span>
+    <span class="val-inside light">1037.5</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">John Fike</span><span class="owner-years">2004–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:74.5%; background:#3B6D11;">
+    <span class="team-names">Mojo Explosion · Mojo Californios · Mojo Joneses · Basketball Joneses</span>
+    <span class="val-inside light">903.5</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Brad McLelland <span class="marker" title="Co-owned team(s)">⚑</span></span><span class="owner-years">2003–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:69.1%; background:#639922;">
+    <span class="team-names">Von Hinrich · Non Hinrich · Flying Hellfish · Jingletown Glascocks · Oakland Outlaws</span>
+    <span class="val-inside light">838</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Owen Davis</span><span class="owner-years">2010–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:59.2%; background:#993C1D;">
+    <span class="team-names">Chowdaheads · NextLevel Startup</span>
+    <span class="val-inside light">718</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Dan Harris</span><span class="owner-years">2001–16</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:58.1%; background:#0C447C;">
+    <span class="team-names">Marin Marauders</span>
+    <span class="val-inside light">704.5</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Robert Yamauchi</span><span class="owner-years">2001–18</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:53.6%; background:#3B6D11;">
+    <span class="team-names">Mutant Monkees (2002) · B-Town (various)</span>
+    <span class="val-inside light">649.5</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Tom Obernesser</span><span class="owner-years">2012–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:50.9%; background:#0C6B8E;">
+    <span class="team-names">Los Carniceros</span>
+    <span class="val-inside light">617.5</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Cory Bryant</span><span class="owner-years">2001–11</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:35.5%; background:#993C1D;">
+    <span class="team-names">Chocolate Thunder · Double Dribble</span>
+    <span class="val-inside light">430</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Michael Hengl</span><span class="owner-years">2001–09</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:31.1%; background:#533489;">
+    <span class="team-names">Finish Your Shot</span>
+    <span class="val-inside light">377</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Kyle Lecky <span class="marker" title="Co-owned team(s)">⚑</span></span><span class="owner-years">2001, 2004–05, 2017–22</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:29.8%; background:#B5861A;">
+    <span class="team-names">Grayson Gang* · Jeane's Junkies · The Soft Crepes</span>
+    <span class="val-inside light">361</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Anthony Hickman <span class="marker" title="Co-owned team(s)">⚑</span></span><span class="owner-years">2018–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:26.8%; background:#2E6B8A;">
+    <span class="team-names">Oakland Outlaws* 2018–19 · Richmond Rimshots 2020–25</span>
+    <span class="val-inside light">325</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Kevin Lynch</span><span class="owner-years">2017–23</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:22.9%; background:#5B7A1F;">
+    <span class="team-names">Lower the Boom</span>
+    <span class="val-inside dark">278</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Dan Scharf</span><span class="owner-years">2001–03, 2005</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:16.9%; background:#777;">
+    <span class="team-names">Favor Seeking Cronies</span>
+    <span class="val-inside dark">205</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Mike Sternberg</span><span class="owner-years">2023–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:8.9%; background:#aaa;">
+    <span class="team-names">World B. Flat · IKWTHID · Los Banquero$</span>
+    <span class="val-inside dark">108</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name">Ed Maxwell</span><span class="owner-years">2023–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:6.3%; background:#999;">
+    <span class="team-names">World B. Flat · War Eyors</span>
+    <span class="val-inside dark">76</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name" style="font-style:italic;">Franzese / Pickering</span><span class="owner-years">2003</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:3.1%; background:#777;">
+    <span class="val-inside dark" style="padding-left:4px;">38</span>
+  </div></div>
+</div>
+<div class="row">
+  <div class="owner"><span class="owner-name" style="font-style:italic;">Unknown (Chocolate Thunder)</span><span class="owner-years">2001</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:3.0%; background:#ccc;">
+    <span class="val-inside dark" style="padding-left:4px;">36</span>
+  </div></div>
+</div><div class="bar-wrap"><div class="bar-fill" style="width:100%; background:#173404;">
+    <span class="team-names">Oxford All-Stars 2001–25</span>
+    <span class="val-inside light">1,212.0</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Paul Lecky <span class="marker" title="Co-owned Grayson Gang 2001 w/ Kyle Lecky">⚑</span></span><span class="owner-years">2001–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:94.6%; background:#173404;">
+    <span class="team-names">Grayson Gang* | Kangaroos 2002–22 | Holdovers | Boomers 2024–25</span>
+    <span class="val-inside light">1,100.5</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Jim McLelland <span class="marker" title="Co-owned Keyser Sozes 2002 w/ Brad McLelland">⚑</span></span><span class="owner-years">2001–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:94.4%; background:#173404;">
+    <span class="team-names">Woodpeckers of Mistrust | Keyser Sozes* | Runnin' Buddhas 2003–25</span>
+    <span class="val-inside light">1,116.0</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Aaron Schleifer</span><span class="owner-years">2001–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:92.2%; background:#173404;">
+    <span class="team-names">Phi Slamma Bannana 2001–25</span>
+    <span class="val-inside light">1,071.0</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Rod Bassler</span><span class="owner-years">2001–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:87.5%; background:#27500A;">
+    <span class="team-names">Mr. Mean 2001–25</span>
+    <span class="val-inside light">1,037.5</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">John Fike</span><span class="owner-years">2004–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:83.7%; background:#27500A;">
+    <span class="team-names">Mojo Explosion | Mojo Californios | Mojo Joneses 2022–25</span>
+    <span class="val-inside light">903.5</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Brad McLelland <span class="marker" title="Co-owned Keyser Sozes 2002 w/ Jim McLelland | Co-owned Oakland Outlaws 2018-19 w/ Anthony Hickman">⚑</span></span><span class="owner-years">2003–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:80.7%; background:#27500A;">
+    <span class="team-names">Von Hinrich | Non Hinrich | Flying Hellfish | Jingletown Glascocks | Oakland Outlaws 2013–25</span>
+    <span class="val-inside light">838.0</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Dan Harris</span><span class="owner-years">2001–16</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:63.4%; background:#3B6D11;">
+    <span class="team-names">Marin Marauders 2001–16</span>
+    <span class="val-inside light">704.5</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Robert Yamauchi</span><span class="owner-years">2001–18</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:51.5%; background:#3B6D11;">
+    <span class="team-names">Mutant Monkees 2002 | B-Town 2001–18</span>
+    <span class="val-inside light">649.5</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Anthony Hickman <span class="marker" title="Co-owned Oakland Outlaws 2018-19 w/ Brad McLelland">⚑</span></span><span class="owner-years">2018–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:61.9%; background:#3B6D11;">
+    <span class="team-names">Oakland Outlaws* 2018–19 | Richmond Rimshots 2020–25</span>
+    <span class="val-inside light">325.0</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Tom Obernesser</span><span class="owner-years">2011–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:49.0%; background:#639922;">
+    <span class="team-names dark">Los Carniceros 2011–25</span>
+    <span class="val-inside dark">617.5</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Cory Bryant</span><span class="owner-years">2001–11</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:43.8%; background:#639922;">
+    <span class="team-names dark">Chocolate Thunder | Double Dribble 2002–11</span>
+    <span class="val-inside dark">430.0</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Michael Hengl</span><span class="owner-years">2001–09</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:37.6%; background:#639922;">
+    <span class="team-names dark">Finish Your Shot 2001–09</span>
+    <span class="val-inside dark">377.0</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Kevin Lynch</span><span class="owner-years">2017–23</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:22.0%; background:#97C459;">
+    <span class="team-names dark">Lower the Boom</span>
+    <span class="val-inside dark">278.0</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Owen Davis</span><span class="owner-years">2021–25</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:20.8%; background:#97C459;">
+    <span class="team-names dark">Chowdaheads</span>
+    <span class="val-inside dark">718.0</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Kyle Lecky <span class="marker" title="Co-owned Grayson Gang 2001 w/ Paul Lecky">⚑</span></span><span class="owner-years">2001, 2004–05, 2017–22</span></div>
+  <div class="bar-wrap"><div class="bar-fill" style="width:16.7%; background:#97C459;">
+    <span class="team-names dark">Grayson Gang* | Junkies | Soft Crepes</span>
+    <span class="val-inside dark">361.0</span>
+  </div></div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Dan Scharf</span><span class="owner-years">2001–03</span></div>
+  <div class="bar-wrap">
+    <div class="bar-fill" style="width:11.9%; background:#97C459;">
+      <span class="val-inside dark" style="padding-left:6px;">205.0</span>
+    </div>
+    <span class="val-after" style="left:calc(11.9% + 6px);">Favor Seeking Cronies</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Mike Sternberg</span><span class="owner-years">2023–25</span></div>
+  <div class="bar-wrap">
+    <div class="bar-fill" style="width:8.6%; background:#97C459;">
+      <span class="val-inside dark" style="padding-left:6px;">108.0</span>
+    </div>
+    <span class="val-after" style="left:calc(8.6% + 6px);">World B. Flat | IKWTHID | Los Banquero$</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="owner"><span class="owner-name">Ed Maxwell</span><span class="owner-years">2023–25</span></div>
+  <div class="bar-wrap">
+    <div class="bar-fill" style="width:6.0%; background:#97C459;">
+      <span class="val-inside dark" style="padding-left:6px;">76</span>
+    </div>
+    <span class="val-after" style="left:calc(6.0% + 6px);">World B. Flat | War Eyors</span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="row co-row">
+  <div class="owner"><span class="owner-name" style="font-style:italic;">Dandy Dago +2</span><span class="owner-years">Franzese / Pickering · 2003</span></div>
+  <div class="bar-wrap">
+    <div class="bar-fill" style="width:3.0%; background:#97C459;">
+      <span class="val-inside dark" style="padding-left:4px;">38</span>
+    </div>
+  </div>
+</div>
+
+<p class="footnote">⚑ Co-owned teams are credited in full to each owner's individual points total. | * denotes a co-owned team.</p>
+<p class="source">Source: CBS Sports Fantasy Basketball — E-Line league history. Season-by-season standings data begins 2001; pre-2001 records unavailable.</p>
+
+</body>
+</html>
