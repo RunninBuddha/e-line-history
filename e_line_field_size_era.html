@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Line — Field Size & Era Comparison</title>
+<style>
+body { font-family: sans-serif; background: #fff; padding: 2rem; max-width: 820px; margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+  <div style="background:#f5f5f0; border-radius:8px; padding:12px 16px; flex:1; min-width:120px;">
+    <div style="font-size:12px; color:#555; margin-bottom:4px;">early era avg</div>
+    <div style="font-size:22px; font-weight:500;">43.2</div>
+    <div style="font-size:11px; color:#aaa;">2001–08</div>
+  </div>
+  <div style="background:#f5f5f0; border-radius:8px; padding:12px 16px; flex:1; min-width:120px;">
+    <div style="font-size:12px; color:#555; margin-bottom:4px;">middle era avg</div>
+    <div style="font-size:22px; font-weight:500;">41.8</div>
+    <div style="font-size:11px; color:#aaa;">2009–16</div>
+  </div>
+  <div style="background:#f5f5f0; border-radius:8px; padding:12px 16px; flex:1; min-width:120px;">
+    <div style="font-size:12px; color:#555; margin-bottom:4px;">recent era avg</div>
+    <div style="font-size:22px; font-weight:500;">44.2</div>
+    <div style="font-size:11px; color:#aaa;">2017–25</div>
+  </div>
+  <div style="background:#f5f5f0; border-radius:8px; padding:12px 16px; flex:1; min-width:120px;">
+    <div style="font-size:12px; color:#555; margin-bottom:4px;">peak avg season</div>
+    <div style="font-size:22px; font-weight:500;">49.0</div>
+    <div style="font-size:11px; color:#aaa;">2005 (13 teams)</div>
+  </div>
+</div>
+
+<div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:12px; font-size:12px; color:#555;">
+  <span style="display:flex;align-items:center;gap:5px;"><span style="width:24px;height:3px;background:#0C447C;display:inline-block;border-radius:2px;"></span>league avg pts (left axis)</span>
+  <span style="display:flex;align-items:center;gap:5px;"><span style="width:14px;height:14px;background:#B5D4F4;display:inline-block;border-radius:2px;"></span>field size — teams (right axis)</span>
+  <span style="display:flex;align-items:center;gap:5px;"><span style="width:14px;height:14px;background:rgba(23,52,4,0.12);display:inline-block;border-radius:2px;"></span>early era</span>
+  <span style="display:flex;align-items:center;gap:5px;"><span style="width:14px;height:14px;background:rgba(133,79,11,0.12);display:inline-block;border-radius:2px;"></span>middle era</span>
+  <span style="display:flex;align-items:center;gap:5px;"><span style="width:14px;height:14px;background:rgba(12,68,124,0.12);display:inline-block;border-radius:2px;"></span>recent era</span>
+</div>
+
+<div style="position:relative; width:100%; height:380px;">
+  <canvas id="fieldEra" role="img" aria-label="Combined bar and line chart showing E-Line field size in teams and league average roto points per season from 2001 to 2025."></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const labels = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25'];
+const avgPts = [42.0,38.5,45.5,45.5,49.0,42.0,38.5,38.5,42.0,42.0,40.0,42.0,42.0,42.0,42.0,42.0,45.5,43.8,42.0,42.0,45.5,45.5,42.0,45.5,45.5];
+const fieldSize = [11,10,12,12,13,11,10,10,11,11,11,11,11,11,11,11,12,12,11,11,12,12,11,12,12];
+const eraBg = labels.map((_, i) => {
+  if (i <= 7) return 'rgba(23,52,4,0.10)';
+  if (i <= 15) return 'rgba(133,79,11,0.10)';
+  return 'rgba(12,68,124,0.10)';
+});
+
+new Chart(document.getElementById('fieldEra'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [
+      {
+        type: 'bar',
+        label: 'field size',
+        data: fieldSize,
+        yAxisID: 'yField',
+        backgroundColor: eraBg,
+        borderColor: eraBg.map(c => c.replace('0.10','0.3')),
+        borderWidth: 1,
+        order: 2,
+      },
+      {
+        type: 'line',
+        label: 'league avg pts',
+        data: avgPts,
+        yAxisID: 'yPts',
+        borderColor: '#0C447C',
+        borderWidth: 2.5,
+        pointBackgroundColor: avgPts.map(v => v >= 45 ? '#0C447C' : '#85B7EB'),
+        pointRadius: avgPts.map(v => v >= 45 ? 5 : 3),
+        pointHoverRadius: 8,
+        tension: 0.3,
+        fill: false,
+        order: 1,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          title(items) { return `20${items[0].label}`; },
+          label(item) {
+            if (item.datasetIndex === 0) return `teams: ${item.raw}`;
+            return `league avg: ${item.raw.toFixed(1)} pts`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: '#888', font: { size: 11 }, autoSkip: false },
+        grid: { display: false },
+        title: { display: true, text: 'season', color: '#888', font: { size: 11 } }
+      },
+      yPts: {
+        type: 'linear',
+        position: 'left',
+        min: 30,
+        max: 55,
+        ticks: { color: '#0C447C', font: { size: 11 }, stepSize: 5 },
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        title: { display: true, text: 'league avg pts', color: '#0C447C', font: { size: 11 } }
+      },
+      yField: {
+        type: 'linear',
+        position: 'right',
+        min: 0,
+        max: 16,
+        ticks: { color: '#888', font: { size: 11 }, stepSize: 1 },
+        grid: { drawOnChartArea: false },
+        title: { display: true, text: 'teams in league', color: '#888', font: { size: 11 } }
+      }
+    }
+  }
+});
+</script>
+
+<div style="margin-top:12px; display:flex; gap:24px; font-size:11px; color:#aaa;">
+  <span>early era (2001–08): avg 43.2 pts · avg 11.1 teams</span>
+  <span>middle era (2009–16): avg 41.8 pts · avg 11.0 teams</span>
+  <span>recent era (2017–25): avg 44.2 pts · avg 11.7 teams</span>
+</div>
+<p style="margin-top:6px; font-size:11px; color:#aaa; font-style:italic;">Source: CBS Sports Fantasy Basketball — E-Line league history. Season-by-season standings data begins 2001; pre-2001 records unavailable.</p>
+
+</body>
+</html>
