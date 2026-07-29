@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Line — Owner Stats Table</title>
+<style>
+body{font-family:sans-serif;background:#fff;padding:2rem;max-width:820px;margin:0 auto;}
+table{width:100%;border-collapse:collapse;font-size:11px;}
+thead th{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.05em;font-weight:400;text-align:left;padding:6px 8px;border-bottom:1px solid #ddd;white-space:nowrap;}
+thead th.r{text-align:right;}
+tbody tr{border-bottom:.5px solid #eee;}
+tbody tr:last-child{border-bottom:none;}
+tbody td{padding:5px 8px;vertical-align:top;color:#555;font-size:11px;}
+td.owner{font-weight:500;color:#111;}
+td.r{text-align:right;}
+.pill{display:inline-block;padding:2px 8px;border-radius:3px;font-weight:500;white-space:nowrap;}
+.teams{font-size:9.5px;color:#aaa;font-weight:400;display:block;margin-top:2px;}
+.tenure{font-size:9.5px;color:#aaa;font-weight:400;margin-left:4px;}
+.mk{font-size:10px;color:#639922;}
+.yr{font-size:10px;opacity:.65;}
+.key{display:flex;align-items:center;gap:6px;margin-top:14px;flex-wrap:wrap;}
+.key-swatch{width:28px;height:14px;border-radius:2px;display:inline-block;}
+.key-label{font-size:10px;color:#888;margin-right:4px;}
+.key-note{font-size:10px;color:#aaa;}
+.fn{font-size:11px;color:#888;margin-top:12px;}
+.src{font-size:11px;color:#aaa;margin-top:4px;font-style:italic;}
+</style>
+</head>
+<body>
+
+<table>
+<thead><tr>
+  <th>#</th>
+  <th>Owner / teams</th>
+  <th class="r">Seasons</th>
+  <th class="r">Total</th>
+  <th class="r">Avg</th>
+  <th class="r">High (yr)</th>
+  <th class="r">Low (yr)</th>
+</tr></thead>
+<tbody id="tb"></tbody>
+</table>
+
+<div class="key">
+  <span class="key-label">Performance scale:</span>
+  <span class="key-swatch" style="background:#173404;"></span>
+  <span class="key-note">top</span>
+  <span class="key-swatch" style="background:#27500A;"></span>
+  <span class="key-swatch" style="background:#639922;"></span>
+  <span class="key-swatch" style="background:#C0DD97;"></span>
+  <span class="key-swatch" style="background:#F5E6C8;"></span>
+  <span class="key-swatch" style="background:#EF9F27;"></span>
+  <span class="key-swatch" style="background:#854F0B;"></span>
+  <span class="key-note">bottom</span>
+  <span class="key-note" style="margin-left:12px;">· Low (yr) column is inverted — higher low score = greener</span>
+</div>
+
+<p class="fn">⚑ Co-owned teams credited in full to each owner's total. * denotes a co-owned team.</p>
+<p class="src">Source: CBS Sports Fantasy Basketball — E-Line league history. Season-by-season standings data begins 2001; pre-2001 records unavailable.</p>
+
+<script>
+const rows=[
+  {rk:1, nm:'Barry Fike', tn:'2001–25', ss:24, tot:1212.0, av:50.5, hi:71.0, hiY:"'04", lo:30.0, loY:"'09", tm:'Oxford All-Stars', co:false, it:false},
+  {rk:2, nm:'Jim McLelland', tn:'2001–25', ss:25, tot:1116.0, av:44.6, hi:70.0, hiY:"'05", lo:16.0, loY:"'06", tm:'Woodpeckers of Mistrust · Keyser Sozes* · Runnin\' Buddhas', co:true, it:false},
+  {rk:3, nm:'Paul Lecky', tn:'2001–25', ss:24, tot:1100.5, av:45.9, hi:64.0, hiY:"'13", lo:22.0, loY:"'09", tm:'Grayson Gang* · Kangaroos · Holdovers · Boomers', co:true, it:false},
+  {rk:4, nm:'Aaron Schleifer', tn:'2001–25', ss:25, tot:1071.0, av:42.8, hi:66.0, hiY:"'03", lo:18.0, loY:"'13", tm:'Phi Slamma Bannana', co:false, it:false},
+  {rk:5, nm:'Rod Bassler', tn:'2001–25', ss:25, tot:1037.5, av:41.5, hi:62.0, hiY:"'05", lo:17.0, loY:"'25", tm:'Mr. Mean', co:false, it:false},
+  {rk:6, nm:'John Fike', tn:'2004–25', ss:22, tot:903.5, av:41.1, hi:67.0, hiY:"'25", lo:11.0, loY:"'16", tm:'Mojo Explosion · Mojo Californios · Mojo Joneses · Basketball Joneses', co:false, it:false},
+  {rk:7, nm:'Brad McLelland', tn:'2003–25', ss:21, tot:838.0, av:39.9, hi:59.0, hiY:"'04", lo:14.0, loY:"'09", tm:'Von Hinrich · Non Hinrich · Flying Hellfish · Jingletown Glascocks · Oakland Outlaws', co:true, it:false},
+  {rk:8, nm:'Owen Davis', tn:'2010–25', ss:15, tot:718.0, av:47.9, hi:75.0, hiY:"'22", lo:13.0, loY:"'21", tm:'Chowdaheads · NextLevel Startup', co:false, it:false},
+  {rk:9, nm:'Dan Harris', tn:'2001–16', ss:16, tot:704.5, av:44.0, hi:63.0, hiY:"'04", lo:28.0, loY:"'03", tm:'Marin Marauders', co:false, it:false},
+  {rk:10, nm:'Robert Yamauchi', tn:'2001–18', ss:18, tot:649.5, av:36.1, hi:60.0, hiY:"'16", lo:16.0, loY:"'01", tm:'Mutant Monkees (2002) · B-Town (various)', co:false, it:false},
+  {rk:11, nm:'Tom Obernesser', tn:'2012–25', ss:14, tot:617.5, av:44.1, hi:57.0, hiY:"'18", lo:27.0, loY:"'15", tm:'Los Carniceros', co:false, it:false},
+  {rk:12, nm:'Cory Bryant', tn:'2001–11', ss:11, tot:430.0, av:39.1, hi:49.0, hiY:"'07", lo:26.0, loY:"'08", tm:'Chocolate Thunder · Double Dribble', co:false, it:false},
+  {rk:13, nm:'Michael Hengl', tn:'2001–09', ss:9, tot:377.0, av:41.9, hi:64.0, hiY:"'05", lo:18.0, loY:"'08", tm:'Finish Your Shot', co:false, it:false},
+  {rk:14, nm:'Kyle Lecky', tn:'2001, 2004–05, 2017–22', ss:9, tot:361.0, av:40.1, hi:61.5, hiY:"'21", lo:11.0, loY:"'01", tm:'Grayson Gang* · Jeane\'s Junkies · The Soft Crepes', co:true, it:false},
+  {rk:15, nm:'Anthony Hickman', tn:'2018–25', ss:8, tot:325.0, av:40.6, hi:67.0, hiY:"'24", lo:17.0, loY:"'25", tm:'Oakland Outlaws* 2018–19 · Richmond Rimshots 2020–25', co:true, it:false},
+  {rk:16, nm:'Kevin Lynch', tn:'2017–23', ss:7, tot:278.0, av:39.7, hi:59.0, hiY:"'22", lo:22.0, loY:"'19", tm:'Lower the Boom', co:false, it:false},
+  {rk:17, nm:'Dan Scharf', tn:'2001–03, 2005', ss:4, tot:205.0, av:51.2, hi:58.0, hiY:"'01", lo:38.0, loY:"'02", tm:'Favor Seeking Cronies', co:false, it:false},
+  {rk:18, nm:'Mike Sternberg', tn:'2023–25', ss:3, tot:108.0, av:36.0, hi:49.0, hiY:"'25", lo:24.0, loY:"'23", tm:'World B. Flat · IKWTHID · Los Banquero$', co:false, it:false},
+  {rk:19, nm:'Ed Maxwell', tn:'2023–25', ss:3, tot:76.0, av:25.3, hi:32.0, hiY:"'25", lo:20.0, loY:"'24", tm:'World B. Flat · War Eyors', co:false, it:false},
+  {rk:'—', nm:'Franzese / Pickering', tn:'2003', ss:1, tot:38, av:38.0, hi:38.0, hiY:"'03", lo:38.0, loY:"'03", tm:'Dandy Dago +2', co:false, it:true},
+  {rk:'—', nm:'Unknown (Chocolate Thunder)', tn:'2001', ss:1, tot:36, av:36.0, hi:36.0, hiY:"'01", lo:36.0, loY:"'01", tm:'Chocolate Thunder', co:false, it:true},
+];
+
+const S=[{bg:'#173404',fg:'#EAF3DE'},{bg:'#27500A',fg:'#EAF3DE'},{bg:'#639922',fg:'#EAF3DE'},{bg:'#C0DD97',fg:'#173404'},{bg:'#F5E6C8',fg:'#633806'},{bg:'#EF9F27',fg:'#173404'},{bg:'#854F0B',fg:'#FAEEDA'}];
+
+function pc(val,all,inv){
+  const s=[...all].sort((a,b)=>a-b);
+  const n=s.length;
+  const r=s.filter(v=>v<val).length;
+  let t=n>1?r/(n-1):0.5;
+  if(inv)t=1-t;
+  return S[Math.min(Math.floor(t*S.length),S.length-1)];
+}
+
+function pill(v,c,yr){
+  const disp=Number.isInteger(v)?v.toLocaleString():v.toFixed(1);
+  return `<span class="pill" style="background-color:${c.bg};color:${c.fg};">${disp}${yr?' <span class="yr">'+yr+'</span>':''}</span>`;
+}
+
+const tots=rows.map(r=>r.tot),avgs=rows.map(r=>r.av),his=rows.map(r=>r.hi),los=rows.map(r=>r.lo);
+const tb=document.getElementById('tb');
+
+rows.forEach(r=>{
+  const cT=pc(r.tot,tots,false);
+  const cA=pc(r.av, avgs,false);
+  const cH=pc(r.hi, his, false);
+  const cL=pc(r.lo, los, true);
+  const nm=r.it?`<em>${r.nm}</em>`:r.co?`${r.nm} <span class="mk">⚑</span>`:r.nm;
+  const tr=document.createElement('tr');
+  if(r.it)tr.style.borderTop='1px solid #ddd';
+  tr.innerHTML=`
+    <td>${r.rk}</td>
+    <td class="owner">${nm}<span class="tenure">${r.tn}</span><span class="teams">${r.tm}</span></td>
+    <td class="r">${r.ss}</td>
+    <td class="r">${pill(r.tot,cT,'')}</td>
+    <td class="r">${pill(r.av, cA,'')}</td>
+    <td class="r">${pill(r.hi, cH,r.hiY)}</td>
+    <td class="r">${pill(r.lo, cL,r.loY)}</td>
+  `;
+  tb.appendChild(tr);
+});
+</script>
+</body>
+</html>
